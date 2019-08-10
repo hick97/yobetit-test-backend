@@ -4,6 +4,8 @@ const routes = express.Router()
 
 const countryController = require('./app/controllers/CountryController')
 
-routes.post('/', countryController.getCountryByName)
+routes.get('/country/name/:countryName', countryController.getCountryByName)
+
+routes.get('/country/all', countryController.getAllCountries)
 
 module.exports = routes
