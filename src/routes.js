@@ -2,8 +2,12 @@ const express = require('express')
 
 const routes = express.Router()
 
-routes.get('/', (req, res) => {
-  res.status(200).send('OK')
-})
+const countryController = require('./app/controllers/CountryController')
+
+routes.get('/country/all', countryController.getAllCountries)
+
+routes.get('/country/name/:countryName', countryController.getCountryByName)
+
+routes.post('/country/names', countryController.getCountriesFromArray)
 
 module.exports = routes
