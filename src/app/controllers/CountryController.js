@@ -38,6 +38,30 @@ class CountryController {
       res.status(404).json(errorNotFound)
     }
   }
+
+  async getCountriesFromArray (req, res) {
+    const { names } = req.body
+
+    try {
+      const { data: countries } = await axios.get(`${BASE_URL}/all`)
+      
+      const result = []
+      names.forEach(country => {
+        const keySearch = country.toLowerCase()
+
+        let matches = countries.filter((item) => {
+          const { name } = item
+          return (
+            name.toLowerCase().search(keySearch) !== -1
+          )
+        })
+        result.push(matches)
+      })
+      res.status(200).json(result)
+    } catch (err) {
+      res.status(400).json(errorBadRequest)
+    }
+  }
 }
 
 module.exports = new CountryController()
