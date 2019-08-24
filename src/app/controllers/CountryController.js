@@ -14,7 +14,7 @@ class CountryController {
     }
   }
 
-  // Getting coutry by name
+  // Getting country by name
   async getCountryByName (req, res) {
     try {
       const { countryName } = req.params
