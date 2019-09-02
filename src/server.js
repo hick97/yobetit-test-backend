@@ -1,5 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const Youch = require('youch')
+const Sentry = require('@sentry/node')
 const cors = require('cors')
 
 const databaseConfig = require('./config/database')
@@ -9,10 +12,13 @@ const userRoutes = require('./routes/user')
 const sessionsRoutes = require('./routes/sessions')
 const machineRoutes = require('./routes/machine')
 
+const sentryConfig = require('./config/sentry')
+
 class App {
   constructor () {
     this.express = express()
-    this.isDev = process.env.NODE_ENV === 'development'
+
+    Sentry.init(sentryConfig)
 
     this.database()
     this.middlewares()
@@ -20,6 +26,7 @@ class App {
   }
 
   middlewares () {
+    this.express.use(Sentry.Handlers.requestHandler())
     this.express.use(express.json())
     this.express.use(cors())
   }
@@ -36,6 +43,18 @@ class App {
     this.express.use('/api/v1/user', userRoutes)
     this.express.use('/api/v1/session', sessionsRoutes)
     this.express.use('/api/v1/machine', machineRoutes)
+    this.express.use(Sentry.Handlers.errorHandler())
+  }
+
+  exceptionHandler () {
+    this.server.use(async (err, req, res, next) => {
+      if (process.env.NODE_ENV === 'development') {
+        const errors = await new Youch(err, req).toJSON()
+
+        return res.status(500).json(errors)
+      }
+      return res.status(500).json({ error: 'Internal server error' })
+    })
   }
 }
 

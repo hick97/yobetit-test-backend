@@ -1,12 +1,12 @@
 const Yup = require('yup')
 const axios = require('axios')
-const BASE_URL = 'https://restcountries.eu/rest/v2'
+const api = require('../services/api')
 
 class CountryController {
   // Getting all countries
   async getAllCountries (req, res) {
     try {
-      const { data: countries } = await axios.get(`${BASE_URL}/all`)
+      const { data: countries } = await axios.get(`${api.baseURL}/all`)
 
       return res.json(countries)
     } catch (err) {
@@ -19,7 +19,7 @@ class CountryController {
     try {
       const { countryName } = req.params
 
-      const { data: countryData } = await axios.get(`${BASE_URL}/name/${countryName}`)
+      const { data: countryData } = await axios.get(`${api.baseURL}/name/${countryName}`)
 
       // Returns only one country
       return res.json(countryData[0])
@@ -40,7 +40,7 @@ class CountryController {
     }
     const { names } = req.body
 
-    const { data: countries } = await axios.get(`${BASE_URL}/all`)
+    const { data: countries } = await axios.get(`${api.baseURL}/all`)
 
     const result = []
 
