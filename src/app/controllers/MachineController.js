@@ -42,7 +42,6 @@ class MachineController {
       // Push random value in result
       await spin_result.push(REELS[index][randomNumber])
     }
-    console.log(spin_result)
     // Put frequencies on the Map
     spin_result.forEach(value => fruit_frequency.set(value, fruit_frequency.get(value) + 1))
 
