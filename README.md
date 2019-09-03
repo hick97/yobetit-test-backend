@@ -65,7 +65,7 @@ This application is hosted on Heroku and give a support to test front end applic
 - Run the server in development mode <code>npm run dev</code> or <code>yarn dev </code>
 - Access in your browser <a href="http://localhost:3001/api/v1/country/all">http://localhost:3001/api/v1/country/all</a>
 
-By: <a href="https://github.com/hick97">Henrique Augusto</a> and inspired by <a href="http://renanlopes.com">Renan Lopes</a>
+By: <a href="https://github.com/hick97">Henrique Augusto</a>
 
 [heroku.com]: <https://www.heroku.com>
 [mlab.com]: <https://mlab.com>
