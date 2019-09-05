@@ -16,6 +16,8 @@ const rewards = {
 
 class MachineController {
   async index (req, res) {
+
+    let status = false
     const user = await User.findById(req.userId)
 
     user.set({ coins: user.coins - 1 })
@@ -53,13 +55,15 @@ class MachineController {
     coins_won += rewards.apple[fruit_frequency.get('apple')]
     coins_won += rewards.banana[fruit_frequency.get('banana')]
 
+    if (coins_won > 0) status = true
+
     user.set({ coins: user.coins + coins_won })
 
     await user.save()
 
     const { coins: new_coins } = user
 
-    return res.json({ new_coins, spin: spin_result })
+    return res.json({ new_coins, spin: spin_result, coins_won , winner: status })
   }
 }
 
